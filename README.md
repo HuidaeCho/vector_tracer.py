@@ -24,7 +24,7 @@ vector_tracer [-h] [-c] input_(svg|csv)_path [color] [output_gif_path]
   -c: draw circles
 ```
 
-## Example
+## Examples
 
 `grasslogo.svg` is also available from
 https://grass.osgeo.org/images/logos/grasslogo.svg. `horse.csv` and `lion.csv`
