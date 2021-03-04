@@ -173,7 +173,6 @@ def line(x, params):
     intercept = params[1]
     return slope*x+intercept
 
-################################################################################
 def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
                   cuts=None, buf=0.2):
     n = len(f)
@@ -188,7 +187,6 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
         for i in range(M):
             f_ui[u].append(F[u]*np.exp(2j*np.pi*u*i/M))
 
-    ############################################################################
     x_min = min(f.real)
     x_max = max(f.real)
     y_min = min(f.imag)
@@ -289,7 +287,6 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
         plt.show()
 
 def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
-    ############################################################################
     # https://andymac-2.github.io/fourier-polygon/writeup/
     # https://github.com/andymac-2/fourier-polygon
     # https://dsp.stackexchange.com/a/59133/41245
