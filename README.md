@@ -26,7 +26,7 @@ vector_tracer [-h] [-c] input_(svg|csv)_path [color] [output_gif_path]
 
 ## Example
 
-grasslogo.svg is also available from
+`grasslogo.svg` is also available from
 https://grass.osgeo.org/images/logos/grasslogo.svg. `horse.csv` and `lion.csv`
 were created using coordinates from
 https://andymac-2.github.io/fourier-polygon/.
