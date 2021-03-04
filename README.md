@@ -32,15 +32,15 @@ were created using coordinates from
 https://andymac-2.github.io/fourier-polygon/.
 
 ```bash
-vector_tracer.py grasslogo.svg green fourier-grasslogo.gif
 vector_tracer.py -c grasslogo.svg green fourier-grasslogo-with-circle.gif
+vector_tracer.py grasslogo.svg green fourier-grasslogo.gif
 vector_tracer.py horse.csv brown fourier-horse.gif
 vector_tracer.py lion.csv khaki fourier-lion.gif
 ```
 
-![fourier-grasslogo.gif](fourier-grasslogo.gif "fourier-grasslogo.gif")
-
 ![fourier-grasslogo-with-circles.gif](fourier-grasslogo-with-circles.gif "fourier-grasslogo-with-circles.gif")
+
+![fourier-grasslogo.gif](fourier-grasslogo.gif "fourier-grasslogo.gif")
 
 ![fourier-horse.gif](fourier-horse.gif "fourier-horse.gif")
 
