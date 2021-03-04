@@ -174,7 +174,8 @@ def line(x, params):
     return slope*x+intercept
 
 ################################################################################
-def trace_fourier(f, color='black', draw_circles=True, gif_path=None, cuts=None, buf=0.2):
+def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
+                  cuts=None, buf=0.2):
     n = len(f)
     f = pad_1d(f)
     M = len(f)
@@ -310,7 +311,9 @@ def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
             continue
         # https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
         transform = g.getAttribute('transform')
-        m_matrix = re.match('matrix\(([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*)\)', transform)
+        m_matrix = re.match(
+                'matrix\(([^,]*),([^,]*),([^,]*),([^,]*),([^,]*),([^,]*)\)',
+                transform)
         m_translate = re.match('translate\(([^,]*),([^,]*)\)', transform)
         if m_matrix:
             m = m_matrix
