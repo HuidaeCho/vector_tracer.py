@@ -212,14 +212,14 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
 #    plt.plot(F.real, F.imag)
 #    plt.axis('square')
 #    plt.show()
-#
+
 #    plt.plot(X.real, 'g', label='X(u)')
 #    plt.plot(Y.real, 'r--', label='Y(u)')
 #    plt.title('Fourier Transform')
 #    plt.xlabel('u')
 #    plt.legend()
 #    plt.show()
-#
+
 #    f2 = np.zeros(M, dtype=complex)
 #    for i in range(M):
 #        for u in np.arange(M):
