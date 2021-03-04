@@ -1,4 +1,4 @@
-# vector_tracer
+# vector_tracer.py
 
 This Python script traces SVG and CSV vector files using the discrete Fourier
 transform.
@@ -18,7 +18,7 @@ transform.
 ## Usage
 
 ```bash
-vector_tracer [-h] [-c] input_(svg|csv)_path [color] [output_gif_path]
+vector_tracer.py [-h] [-c] input_(svg|csv)_path [color] [output_gif_path]
 
   -h: this help
   -c: draw circles
@@ -32,10 +32,10 @@ were created using coordinates from
 https://andymac-2.github.io/fourier-polygon/.
 
 ```bash
-vector_tracer grasslogo.svg green fourier-grasslogo.gif
-vector_tracer -c grasslogo.svg green fourier-grasslogo-with-circle.gif
-vector_tracer horse.csv brown fourier-horse.gif
-vector_tracer lion.csv khaki fourier-lion.gif
+vector_tracer.py grasslogo.svg green fourier-grasslogo.gif
+vector_tracer.py -c grasslogo.svg green fourier-grasslogo-with-circle.gif
+vector_tracer.py horse.csv brown fourier-horse.gif
+vector_tracer.py lion.csv khaki fourier-lion.gif
 ```
 
 ![fourier-grasslogo.gif](fourier-grasslogo.gif "fourier-grasslogo.gif")

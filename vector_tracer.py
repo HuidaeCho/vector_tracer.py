@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 ################################################################################
-# Name:    vector_tracer
+# Name:    vector_tracer.py
 # Purpose: This Python script traces SVG and CSV vector files using the
 #          discrete Fourier transform.
 # Author:  Huidae Cho
-# GitHub:  https://github.com/HuidaeCho/vector_tracer
+# GitHub:  https://github.com/HuidaeCho/vector_tracer.py
 # Since:   March 4, 2021
 #
 # Copyright (C) 2021, Huidae Cho <https://idea.isnew.info>
@@ -379,7 +379,7 @@ def trace_vector(input_path, color='black', draw_circles=True, gif_path=None):
 
 def print_usage():
     print(f'''
-Usage: vector_tracer [-h] [-d] input_path [color] [output_gif_path]
+Usage: vector_tracer.py [-h] [-d] input_path [color] [output_gif_path]
 
   -h: this help
   -c: draw circles
