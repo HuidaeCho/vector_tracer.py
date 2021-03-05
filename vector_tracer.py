@@ -29,6 +29,7 @@ import re
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 from matplotlib.animation import FuncAnimation
 
 def fft_1d(f):
@@ -285,7 +286,8 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
                          frames=n+1, interval=5, blit=True)
 
     if gif_path:
-        anim.save(gif_path)
+        writer = animation.writers['pillow']()
+        anim.save(gif_path, writer=writer)
     else:
         plt.show()
 
