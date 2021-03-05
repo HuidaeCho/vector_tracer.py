@@ -55,6 +55,8 @@ vector_tracer.py pi.csv black fourier-pi.gif
 
 ![fourier-lion.gif](fourier-lion.gif "fourier-lion.gif")
 
+![fourier-pi.gif](fourier-pi.gif "fourier-pi.gif")
+
 ## License
 
 Copyright (C) 2021, Huidae Cho <<https://idea.isnew.info>>
