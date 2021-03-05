@@ -18,10 +18,17 @@ transform.
 ## Usage
 
 ```bash
-vector_tracer.py [-h] [-c] input_(svg|csv)_path [color] [output_gif_path]
+Usage: vector_tracer.py [-h] [-c] input_path [color] [output_gif_path]
 
-  -h: this help
-  -c: draw circles
+  -h               display this help and exit
+  -c               draw circles
+
+  input_path       SVG or CSV path
+  color            outline color (default: black)
+  output_gif_path  output GIF path (default: display)
+
+  For color names, please check
+  https://matplotlib.org/stable/gallery/color/named_colors.html
 ```
 
 ## Examples
@@ -29,13 +36,15 @@ vector_tracer.py [-h] [-c] input_(svg|csv)_path [color] [output_gif_path]
 `grasslogo.svg` is also available from
 https://grass.osgeo.org/images/logos/grasslogo.svg. `horse.csv` and `lion.csv`
 were created using coordinates from
-https://andymac-2.github.io/fourier-polygon/.
+https://andymac-2.github.io/fourier-polygon/. `pi.csv` was directly copied from
+https://dsp.stackexchange.com/a/59181/41245.
 
 ```bash
 vector_tracer.py -c grasslogo.svg green fourier-grasslogo-with-circle.gif
 vector_tracer.py grasslogo.svg green fourier-grasslogo.gif
 vector_tracer.py horse.csv brown fourier-horse.gif
 vector_tracer.py lion.csv khaki fourier-lion.gif
+vector_tracer.py pi.csv khaki fourier-pi.gif
 ```
 
 ![fourier-grasslogo-with-circles.gif](fourier-grasslogo-with-circles.gif "fourier-grasslogo-with-circles.gif")

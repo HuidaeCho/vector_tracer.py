@@ -175,6 +175,9 @@ def line(x, params):
 
 def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
                   cuts=None, buf=0.2):
+    # https://andymac-2.github.io/fourier-polygon/writeup/
+    # https://github.com/andymac-2/fourier-polygon
+    # https://dsp.stackexchange.com/a/59133/41245
     n = len(f)
     f = pad_1d(f)
     M = len(f)
@@ -287,15 +290,11 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
         plt.show()
 
 def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
-    # https://andymac-2.github.io/fourier-polygon/writeup/
-    # https://github.com/andymac-2/fourier-polygon
-    # https://dsp.stackexchange.com/a/59133/41245
-    # https://dsp.stackexchange.com/a/59181/41245
-    # https://stackoverflow.com/a/56913776
     from xml.dom import minidom
     from svg.path import parse_path
     from svg.path.path import Line, Move, Close
 
+    # https://stackoverflow.com/a/56913776
     doc = minidom.parse(svg_path)
     path_strings = []
     for path in doc.getElementsByTagName('path'):
@@ -354,10 +353,6 @@ def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
     trace_fourier(f, color, draw_circles, gif_path, cuts)
 
 def trace_csv(csv_path, color='black', draw_circles=True, gif_path=None):
-    # https://andymac-2.github.io/fourier-polygon/writeup/
-    # https://github.com/andymac-2/fourier-polygon
-    # https://dsp.stackexchange.com/a/59133/41245
-    # https://dsp.stackexchange.com/a/59181/41245
     import csv
 
     f = []
@@ -379,10 +374,17 @@ def trace_vector(input_path, color='black', draw_circles=True, gif_path=None):
 
 def print_usage():
     print(f'''
-Usage: vector_tracer.py [-h] [-d] input_path [color] [output_gif_path]
+Usage: vector_tracer.py [-h] [-c] input_path [color] [output_gif_path]
 
-  -h: this help
-  -c: draw circles
+  -h               display this help and exit
+  -c               draw circles
+
+  input_path       SVG or CSV path
+  color            outline color (default: black)
+  output_gif_path  output GIF path (default: display)
+
+  For color names, please check
+  https://matplotlib.org/stable/gallery/color/named_colors.html
 ''')
 
 if __name__ == '__main__':
