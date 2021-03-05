@@ -357,12 +357,24 @@ def trace_csv(csv_path, color='black', draw_circles=True, gif_path=None):
     import csv
 
     f = []
+    cuts = []
+
+    first = True
     with open(csv_path) as csvfile:
         csvreader = csv.reader(csvfile)
         for row in csvreader:
-            f.append(float(row[0])+float(row[1])*1j)
+            if len(row):
+                f.append(float(row[0])+float(row[1])*1j)
+                if first:
+                    if len(cuts):
+                        # for cut in animation
+                        f.append(f[len(f)-1])
+                    first = False
+            else:
+                cuts.append(len(f))
+                first = True
 
-    trace_fourier(f, color, draw_circles, gif_path)
+    trace_fourier(f, color, draw_circles, gif_path, cuts)
 
 def trace_vector(input_path, color='black', draw_circles=True, gif_path=None):
     if input_path.lower().endswith('.svg'):
