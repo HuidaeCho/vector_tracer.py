@@ -175,7 +175,7 @@ def line(x, params):
     return slope*x+intercept
 
 def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
-                  cuts=None, buf=0.2):
+                  cuts=None, margin_ratio=0.2):
     # https://andymac-2.github.io/fourier-polygon/writeup/
     # https://github.com/andymac-2/fourier-polygon
     # https://dsp.stackexchange.com/a/59133/41245
@@ -197,10 +197,10 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
     y_max = max(f.imag)
     x_range = x_max-x_min
     y_range = y_max-y_min
-    xlim_min = x_min-buf*x_range
-    xlim_max = x_max+buf*x_range
-    ylim_min = y_min-buf*y_range
-    ylim_max = y_max+buf*y_range
+    xlim_min = x_min-margin_ratio*x_range
+    xlim_max = x_max+margin_ratio*x_range
+    ylim_min = y_min-margin_ratio*y_range
+    ylim_max = y_max+margin_ratio*y_range
 
 #    if cuts:
 #        for i in range(len(cuts)-1):
