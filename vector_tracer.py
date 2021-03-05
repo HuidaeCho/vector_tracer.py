@@ -326,9 +326,9 @@ def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
     f = []
     cuts = []
 
-    for i in range(len(path_strings)):
-        t = path_strings[i]['transform']
-        path_string = path_strings[i]['d']
+    for path_string in path_strings:
+        t = path_string['transform']
+        path_string = path_string['d']
         path = parse_path(path_string)
         first = True
         for e in path:
@@ -397,21 +397,21 @@ if __name__ == '__main__':
     color = None
     gif_path = None
 
-    for i in range(1, len(sys.argv)):
-        if sys.argv[i] == '-h':
+    for argv in sys.argv[1:]:
+        if argv == '-h':
             print_usage()
             exit(0)
-        elif sys.argv[i] == '-c':
+        elif argv == '-c':
             draw_circles = True
         elif not input_path:
-            input_path = sys.argv[i]
+            input_path = argv
             if not pathlib.Path(input_path).exists():
                 print(f'{input_path}: No such file found')
                 exit(1)
         elif not color:
-            color = sys.argv[i]
+            color = argv
         elif not gif_path:
-            gif_path = sys.argv[i]
+            gif_path = argv
             if pathlib.Path(gif_path).exists():
                 print(f'{gif_path}: File already exists')
                 exit(1)
