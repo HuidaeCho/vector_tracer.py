@@ -174,6 +174,100 @@ def line(x, params):
     intercept = params[1]
     return slope*x+intercept
 
+def arc(s, r, rotation, arc, sweep, e, n=100):
+    # XXX: DOES NOT WORK YET!!!
+    # https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#curve_commands
+    # two intersecting points
+    xs = s.real
+    ys = s.imag
+    xe = e.real
+    ye = e.imag
+
+    # radii
+    a = r.real
+    b = r.imag
+
+    # find the center coordinates (xc, yc)
+    if ys == ye:
+        xc = (xs+xe)/2
+        # A * yc**2 + B * yc + C = 0
+        A = a**2
+        B = -2*a**2*ys
+        C = a**2*(ys**2-b**2)+(b*(xs-xc))**2
+        yc1 = (-B+(B**2-4*A*C)**0.5)/(2*A)
+        yc2 = (-B-(B**2-4*A*C)**0.5)/(2*A)
+        if ys <= yc1 <= ye:
+            yc = yc1
+        else:
+            yc = yc2
+    elif xs == xe:
+        yc = (ys+ye)/2
+        # A * xc**2 + B * xc + C = 0
+        A = b**2
+        B = -2*b**2*xs
+        C = b**2*(xs**2-a**2)+(a*(ys-yc))**2
+        xc1 = (-B+(B**2-4*A*C)**0.5)/(2*A)
+        xc2 = (-B-(B**2-4*A*C)**0.5)/(2*A)
+        if xs <= xc1 <= xe:
+            xc = xc1
+        else:
+            xc = xc2
+    else:
+        # yc = c + d * xc
+        c = (b**2*(xs**2-xe**2)+a**2*(ys**2-ye**2))/(2*a**2*(ys-ye))
+        d = -b**2*(xs-xe)/(a**2*(ys-ye))
+        # A * xc**2 + B * xc + C = 0
+        A = (a*d)**2+b**2
+        B = 2*(a**2*d*(c-ys)-b**2*xs)
+        C = a**2*(ys**2-2*c*ys-b**2+c**2)+(b*xs)**2
+        # TODO: hmm... imaginary solutions???
+        xc1 = (-B+(B**2-4*A*C)**0.5)/(2*A)
+        xc2 = (-B-(B**2-4*A*C)**0.5)/(2*A)
+        if xs <= xc1 <= xe:
+            xc = xc1
+        else:
+            xc = xc2
+        yc = c+d*xc
+    rs = ((xs-xc)**2+(ys-yc)**2)**0.5
+    ts = math.acos((xs-xc)/rs)
+    if ys < yc:
+        ts = 2*np.pi-ts
+    re = ((xe-xc)**2+(ye-yc)**2)**0.5
+    te = math.acos((xe-xc)/re)
+    if ye < yc:
+        te = 2*np.pi-te
+    dt = (te-ts)/(n-1)
+    # TODO: rotation and sweep
+
+    pnts = []
+    for i in range(n):
+        t = ts+dt*i
+        r = a*b/((b*math.cos(t))**2+(a*math.sin(t))**2)**0.5
+        x = r*math.cos(t)+xc
+        y = r*math.sin(t)+yc
+        pnts.append(x+y*1j)
+    return pnts
+
+def quadratic_bezier(s, c, e, n=5):
+    # this function takes complex numbers in x + y * 1j
+    # https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#curve_commands
+    # https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Quadratic_B%C3%A9zier_curves
+    pnts = []
+    for i in range(n):
+        t = i/(n-1)
+        pnts.append((1-t)**2*s+2*(1-t)*t*c+t**2*e)
+    return pnts
+
+def cubic_bezier(s, c1, c2, e, n=5):
+    # this function takes complex numbers in x + y * 1j
+    # https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#curve_commands
+    # https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Cubic_B%C3%A9zier_curves
+    pnts = []
+    for i in range(n):
+        t = i/(n-1)
+        pnts.append((1-t)**3*s+3*(1-t)**2*t*c1+3*(1-t)*t**2*c2+t**3*e)
+    return pnts
+
 def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
                   cuts=None, margin_ratio=0.2):
     # https://andymac-2.github.io/fourier-polygon/writeup/
@@ -212,6 +306,7 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
 #    plt.ylim(ylim_min, ylim_max)
 #    plt.axis('square')
 #    plt.show()
+#    exit()
 
 #    plt.plot(F.real, F.imag)
 #    plt.axis('square')
@@ -282,8 +377,8 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
         lines[2*M].set_data(x, y)
         return lines
 
-    anim = FuncAnimation(fig, animate, init_func=init,
-                         frames=n+1, interval=5, blit=True)
+    anim = FuncAnimation(fig, animate, init_func=init, frames=n+1,
+                         interval=0, blit=True)
 
     if gif_path:
         anim.save(gif_path, writer='pillow')
@@ -293,19 +388,14 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
 def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
     from xml.dom import minidom
     from svg.path import parse_path
-    from svg.path.path import Line, Move, Close
+    from svg.path.path import (Move, Close, Line, Arc, CubicBezier,
+                               QuadraticBezier)
 
     # https://stackoverflow.com/a/56913776
     doc = minidom.parse(svg_path)
     path_strings = []
     for path in doc.getElementsByTagName('path'):
         g = path.parentNode
-        # XXX: for grasslogo.svg
-        # these paths are part of GRASS GIS text with bezier curves, which are
-        # not supported yet
-        if g.getAttribute('id').startswith('flowRoot'):
-            # in ('flowRoot5356', 'flowRoot6517'):
-            continue
         # https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform
         transform = g.getAttribute('transform')
         m_matrix = re.match(
@@ -333,7 +423,14 @@ def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
         path = parse_path(path_string)
         first = True
         for e in path:
-            if isinstance(e, Line):
+            if isinstance(e, Move):
+                first = True
+                cuts.append(len(f))
+                # for cut in animation
+                x = t[0]*e.start.real+t[2]*e.start.imag+t[4]
+                y = t[1]*e.start.real+t[3]*e.start.imag+t[5]
+                f.append(x-y*1j)
+            elif isinstance(e, Line):
                 if first:
                     x = t[0]*e.start.real+t[2]*e.start.imag+t[4]
                     y = t[1]*e.start.real+t[3]*e.start.imag+t[5]
@@ -342,13 +439,24 @@ def trace_svg(svg_path, color='black', draw_circles=True, gif_path=None):
                 x = t[0]*e.end.real+t[2]*e.end.imag+t[4]
                 y = t[1]*e.end.real+t[3]*e.end.imag+t[5]
                 f.append(x-y*1j)
-            elif isinstance(e, Move):
-                first = True
-                cuts.append(len(f))
-                # for cut in animation
-                x = t[0]*e.start.real+t[2]*e.start.imag+t[4]
-                y = t[1]*e.start.real+t[3]*e.start.imag+t[5]
-                f.append(x-y*1j)
+            elif isinstance(e, Arc):
+                print("Arc: Unsupported geometry type")
+                continue
+                # XXX: DOES NOT WORK YET!!!
+                for p in arc(e.start, e.radius, e.rotation, e.arc, e.sweep, e.end):
+                    x = t[0]*p.real+t[2]*p.imag+t[4]
+                    y = t[1]*p.real+t[3]*p.imag+t[5]
+                    f.append(x-y*1j)
+            elif isinstance(e, QuadraticBezier):
+                for p in quadratic_bezier(e.start, e.control, e.end):
+                    x = t[0]*p.real+t[2]*p.imag+t[4]
+                    y = t[1]*p.real+t[3]*p.imag+t[5]
+                    f.append(x-y*1j)
+            elif isinstance(e, CubicBezier):
+                for p in cubic_bezier(e.start, e.control1, e.control2, e.end):
+                    x = t[0]*p.real+t[2]*p.imag+t[4]
+                    y = t[1]*p.real+t[3]*p.imag+t[5]
+                    f.append(x-y*1j)
     cuts.append(len(f))
 
     trace_fourier(f, color, draw_circles, gif_path, cuts)
