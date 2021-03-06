@@ -378,10 +378,10 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
         return lines
 
     anim = FuncAnimation(fig, animate, init_func=init, frames=n+1,
-                         interval=0, blit=True)
+                         interval=1, blit=True)
 
     if gif_path:
-        anim.save(gif_path, writer='pillow')
+        anim.save(gif_path, writer='imagemagick')
     else:
         plt.show()
 
