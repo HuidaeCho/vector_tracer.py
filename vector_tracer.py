@@ -279,11 +279,10 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
 
     F = fft_1d(f)
 
-    f_ui = []
+    f_ui = np.ndarray((M, M), dtype=complex)
     for u in range(M):
-        f_ui.append([])
         for i in range(M):
-            f_ui[u].append(F[u]*np.exp(2j*np.pi*u*i/M))
+            f_ui[u,i] = F[u]*np.exp(2j*np.pi*u*i/M)
 
     x_min = min(f.real)
     x_max = max(f.real)
@@ -357,13 +356,11 @@ def trace_fourier(f, color='black', draw_circles=True, gif_path=None,
         for u in range(M):
             if draw_circles:
                 # circle
-                f_u = np.zeros(M, dtype=complex)
-                for j in range(M):
-                    f_u[j] = f_prev+f_ui[u][j]
+                f_u = f_prev+f_ui[u]
                 lines[u].set_data(f_u.real, f_u.imag)
 
             # arm
-            f_sum += f_ui[u][i]
+            f_sum += f_ui[u,i]
             lines[M+u].set_data((f_prev.real, f_sum.real),
                                 (f_prev.imag, f_sum.imag))
             f_prev = f_sum
