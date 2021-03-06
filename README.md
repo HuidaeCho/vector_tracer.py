@@ -43,7 +43,7 @@ https://dsp.stackexchange.com/a/59181/41245.
 vector_tracer.py -c grasslogo.svg green fourier-grasslogo-with-circles.gif
 vector_tracer.py grasslogo.svg green fourier-grasslogo.gif
 vector_tracer.py horse.csv brown fourier-horse.gif
-vector_tracer.py lion.csv khaki fourier-lion.gif
+vector_tracer.py lion.csv darkgoldenrod fourier-lion.gif
 vector_tracer.py pi.csv black fourier-pi.gif
 ```
 
