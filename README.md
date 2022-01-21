@@ -59,7 +59,7 @@ vector_tracer.py pi.csv black fourier-pi.gif
 
 ## License
 
-Copyright (C) 2021, Huidae Cho <<https://idea.isnew.info>>
+Copyright (C) 2021, Huidae Cho <<https://idea.isnew.info/>>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
